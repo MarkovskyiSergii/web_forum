@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:title="${title}">Title</title>
+</head>
+<header th:insert="fragments/header.html :: header"></header>
+<body>
+<th:block th:include="/_menu"></th:block>
+
+<h2>Message : <span th:utext="${message}"></span> </h2>
+<h2>Message from @PostMapping : <span th:utext="${messageDTO}"></span> </h2>
+
+<a href="/registration"><button>Sing up new client</button></a>
+
+
+<div style="..." th:replace="fragments/footer.html :: footer"></div>
+</body>
+</html>

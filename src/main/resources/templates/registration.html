@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en",  xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 >form</h1>
+<form action="/" th:object="${user}" method="POST" enctype="utf8">
+       <div>
+        <label >first</label>
+        <input th:field="*{userName}"/>
+        <p th:each="error: ${#fields.errors('userName')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label >email</label>
+        <input type="email" th:field="*{email}"/>
+        <p th:each="error : ${#fields.errors('email')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label >password</label>
+        <input type="password" th:field="*{password}"/>
+        <p th:each="error : ${#fields.errors('password')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label >confirm</label>
+        <input type="password" th:field="*{matchingPassword}"/>
+    </div>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <button type="submit" >submit</button>
+</form>
+
+<!--<a th:href="@{/login.html}" >login</a>-->
+
+</body>
+</html>
