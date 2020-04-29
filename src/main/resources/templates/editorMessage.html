@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/common.html::head"></head>
+
+
+<body>
+<div class="background" style="background-color:darkgray; height: 100%">
+    <div class="container-fluid" style="background-color:lightgrey; width: 88%; min-height: 100%">
+        <th:block th:include="fragments/navbar"></th:block>
+
+        <nav aria-label="breadcrumb" style="margin-top: 15px">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Categories</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/topics/} + ${categoryId}">Topics</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/topics/} + ${categoryId} +'/'+ ${topicId}">Messages</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Message editor</li>
+            </ol>
+        </nav>
+
+        <div class="form-group shadow-textarea" style="margin-bottom: 12%">
+            <form action="#" th:action="@{/messages/editMessage/}+${categoryId}+'/' + ${topicId} + '/' + ${messageId}"
+                  th:object="${message}" method="POST">
+                <label for="formControlTextarea" style="padding: 25px"><h2 th:text="${titleTopic}"></h2></label>
+                <textarea class="form-control z-depth-1" id="formControlTextarea" rows="9"
+                          th:field="*{textMessage}" placeholder="Write title for new topic..."></textarea>
+                <p style="color: red" th:if="${#fields.hasErrors('textMessage')}" th:errors="*{textMessage}">title
+                    error</p>
+                <button type="submit" class="btn btn-info btn">Save edited message</button>
+            </form>
+        </div>
+
+        <div style="..." th:replace="fragments/footer.html :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

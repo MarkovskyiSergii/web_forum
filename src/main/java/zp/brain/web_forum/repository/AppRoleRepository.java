@@ -9,8 +9,9 @@ import java.util.List;
 public interface AppRoleRepository extends CrudRepository<AppRoleEntity, Long> {
 
     @Query("Select ur.role.roleName from UserRoleEntity ur where ur.user.userId = ?1")
-    List<String> getRoleNames(Long userId);
+    List<String> getUserRoleNamesById(Long userId);
 
-    @Query("Select ar.roleName from AppRoleEntity ar where ar.roleId = ?1")
+    @Query("from AppRoleEntity ar where ar.roleId = ?1")
     AppRoleEntity getAppRoleByRoleId(Long roleId);
+
 }

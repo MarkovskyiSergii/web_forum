@@ -1,31 +1,29 @@
 package zp.brain.web_forum.DTO;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import zp.brain.web_forum.util.PasswordMatches;
-import zp.brain.web_forum.util.ValidEmail;
-import zp.brain.web_forum.util.ValidPassword;
-
-import javax.validation.constraints.NotBlank;
+import zp.brain.web_forum.validators.PasswordMatches;
+import zp.brain.web_forum.validators.ValidEmail;
+import zp.brain.web_forum.validators.ValidLogin;
+import zp.brain.web_forum.validators.ValidPassword;
 
 
 @Data
 @NoArgsConstructor
-@PasswordMatches
+@PasswordMatches(message = "Password is not matching")
 public class UserDTO {
 
-        @NotBlank
-        private String userName ;
+    @ValidLogin(message = "Login not valid. Use only english letters with/without numbers, min 4 max 15 character")
+    private String userName;
 
-        @ValidEmail
-        private String email;
+    @ValidEmail(message = "Email not valid. Example of email - asdf@gmail.com")
+    private String email;
 
-        @ValidPassword ()
-        private String password;
+    @ValidPassword(message ="Password not valid. Must contains the of at least one low and uppercase letter, " +
+            "one digit and consist min 8 character." )
+    private String password;
 
-        @NotBlank
-        private String matchingPassword;
-
-
+    private String matchingPassword;
 }
+
+

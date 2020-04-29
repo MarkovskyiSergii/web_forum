@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:insert="fragments/common.html::head"></head>
+
+<body>
+<div class="background" style="background-color:darkgray">
+    <div class="container-fluid" style="background-color:lightgrey; width: 88%">
+        <th:block th:include="fragments/navbar"></th:block>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Categories</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/topics/} + ${categoryId}">Topics</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Messages</li>
+            </ol>
+        </nav>
+
+        <div class="message-wrapper">
+            <table class="table" style="background: white">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center" style="width: 73%" th:text="${topic.titleTopic} + ' - Messages'"></th>
+                    <th scope="col" class="text-center" style="width: 9%">Author</th>
+                    <th scope="col" class="text-center" style="width: 9%"
+                        th:if="${#request.getUserPrincipal()!=null}">Redactor
+                    </th>
+                    <th scope="col" class="text-center" style="width: 9%"
+                        th:if="${#request.getUserPrincipal()!=null}">Trash bin
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="message : ${messages}">
+                    <tr>
+                        <td th:text="${message.textMessage}"></td>
+                        <td class="text-center" th:text="${message.userEntity.userName}"></td>
+
+
+                        <td align="center" th:if="${#request.getUserPrincipal()!=null}">
+                            <a th:if="${#request.isUserInRole('ROLE_ADMIN')}or ${message.getUserEntity().getUserId()} == ${user.getUserId()}"
+                               sec:authorize="hasAnyAuthority('ROLE_USER' , 'ROLE_ADMIN')"
+                               th:href="@{/messages/editMessage/}+${categoryId}+'/'+${message.topicEntity.topicId}+'/'+${message.messageId}">
+                                <button type="button" class="btn btn-info btn-sm">Edit</button>
+                            </a>
+                        </td>
+
+                        <td align="center" th:if="${#request.getUserPrincipal()!=null}">
+                            <a th:if="${#request.isUserInRole('ROLE_ADMIN')}
+            or ${message.getUserEntity().getUserId()} == ${user.getUserId()}"
+                               sec:authorize="hasAnyAuthority('ROLE_USER' , 'ROLE_ADMIN')"
+                               th:href="@{/messages/deleteMessage/}+${categoryId}+'/'+${message.topicEntity.topicId}+'/'+${message.messageId}">
+                                <button type="button" class="btn btn-info btn-sm" style="">delete</button>
+                            </a>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group shadow-textarea" style="margin-bottom: 5%"
+             th:if="${#request.getUserPrincipal()!=null}">
+            <form action="#" th:action="@{/messages/} +${categoryId}+'/'+ ${topicId}"
+                  th:object="${message}" method="POST">
+                <label for="formControlTextarea" style="padding-top: 35px"><h3>Create new message</h3></label>
+                <textarea class="form-control z-depth-1" id="formControlTextarea" rows="6"
+                          th:field="*{textMessage}" placeholder="Write text for new topic..."></textarea>
+                <p style="color: red" th:if="${#fields.hasErrors('textMessage')}" th:errors="*{textMessage}">title
+                    error</p>
+                <button type="submit" class="btn btn-info btn">Create message</button>
+            </form>
+        </div>
+
+        <div style="..." th:replace="fragments/footer.html :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

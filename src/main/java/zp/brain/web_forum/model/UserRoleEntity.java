@@ -1,13 +1,12 @@
 package zp.brain.web_forum.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(name = "User_Role_UK",
+@Table(name = "USER_ROLE", uniqueConstraints = @UniqueConstraint(name = "User_Role_UK",
         columnNames = {"user_id", "role_id"}))
 @Data
 @NoArgsConstructor

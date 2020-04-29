@@ -1,16 +1,14 @@
 package zp.brain.web_forum.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+
 
 @Entity
-
+@Table(name = "TOPIC")
 @Data
-@NoArgsConstructor
 public class TopicEntity {
 
     @Id
@@ -18,13 +16,18 @@ public class TopicEntity {
     @Column(name = "topic_id")
     private Long topicId;
 
-    @Column(length = 100, nullable = false)
-    private String Title;
+    @Size(min = 3, max = 100, message = "Title of topic must contain from 3 to 100 characters. This is required for create new Topic...")
+    @Column(name = "title_topic")
+    private String titleTopic;
+
+    @Column(name = "create_topic_time")
+    private Timestamp createTopicTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
 
-    @OneToMany(mappedBy = "topicEntity")
-    private List<MessageEntity> messageEntity = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryEntity category;
 }

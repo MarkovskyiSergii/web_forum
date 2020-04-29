@@ -12,7 +12,6 @@ import zp.brain.web_forum.model.UserEntity;
 import zp.brain.web_forum.repository.AppRoleRepository;
 import zp.brain.web_forum.repository.UserRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,22 +25,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserEntity userEntity = this.userRepository.getUserEntityByUserName(userName)
-                .orElseThrow(() -> new EntityNotFoundException("Пользователь " + userName + " не найден!"));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException
+                                ("User " + userName + " was not found in the database"));
 
-        if (userEntity == null) {
-            System.out.println("User not found! " + userName);
-            throw new UsernameNotFoundException("User " + userName + " was not found in the database");
-        }
-
-        System.out.println("Found User: " + userEntity);
-
-        // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.appRoleRepository.getRoleNames(userEntity.getUserId());
+        List<String> roleNames = this.appRoleRepository.getUserRoleNamesById(userEntity.getUserId());
 
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         if (roleNames != null) {
             for (String role : roleNames) {
-                // ROLE_USER, ROLE_ADMIN,..
                 GrantedAuthority authority = new SimpleGrantedAuthority(role);
                 grantList.add(authority);
             }

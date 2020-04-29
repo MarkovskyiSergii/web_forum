@@ -1,0 +1,53 @@
+<div xmlns:th="http://www.thymeleaf.org">
+
+    <nav class="navbar navbar-expand flex-column flex-md-row  navbar-light" style="background-color: darkcyan ">
+        <a class="navbar-brand font-weight-normal" th:href="@{/}">WebForum</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/users}">Users <span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           th:if="${#request.isUserInRole('ROLE_ADMIN')}" th:href="@{/admin}">
+                            Admin panel
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" th:href="@{/users}">Users</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{#}">Categories</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <ul class="navbar-nav ml-md-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${#request.userPrincipal == null}" th:href="@{/login}">Sign in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Sign out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${#request.userPrincipal == null}"
+                       th:href="@{/registration}">Register</a>
+                </li>
+            </ul>
+            <div class="navbar-text font-weight-bold" th:if="${#request.userPrincipal != null}"
+                 th:text="${#request.getUserPrincipal().getName()}">
+
+            </div>
+        </div>
+    </nav>
+
+
+</div>
